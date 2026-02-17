@@ -1,9 +1,176 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="es">
 <head>
-    <title>Mi Flask</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Maki ❤️</title>
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* Corazones cayendo */
+.heart{
+    position:absolute;
+    color:white;
+    animation:fall linear infinite;
+    opacity:0.9;
+}
+@keyframes fall{
+    from{transform:translateY(-10vh) rotate(0deg);}
+    to{transform:translateY(110vh) rotate(360deg);}
+}
+
+/* Carta */
+.container{
+    perspective:1200px;
+    width:90%;
+    max-width:420px;
+}
+
+.envelope{
+    position:relative;
+    width:100%;
+    height:270px;
+    cursor:pointer;
+}
+
+.front, .back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:15px;
+    backface-visibility:hidden;
+    transition:1.2s;
+}
+
+/* Frente */
+.front{
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:2.5em;
+    color:#ff4b7d;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
+
+/* Parte trasera */
+.back{
+    background:rgba(255,255,255,0.18);
+    backdrop-filter:blur(18px);
+    transform:rotateY(180deg);
+    color:white;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 20px 40px rgba(0,0,0,0.35);
+}
+
+/* Animación abrir */
+.envelope.open .front{
+    transform:rotateY(180deg);
+}
+.envelope.open .back{
+    transform:rotateY(360deg);
+}
+
+h1{
+    margin-top:0;
+    font-size:1.6em;
+}
+
+p{
+    font-size:1em;
+    line-height:1.6;
+}
+
+/* Responsive */
+@media(max-width:500px){
+    .back{
+        font-size:0.95em;
+    }
+}
+</style>
+
 </head>
+
 <body>
-    <h1>Hola Flask desde templates</h1>
+
+<div class="container">
+    <div class="envelope" onclick="abrirCarta(this)">
+        <div class="front">
+            💌
+        </div>
+
+```
+    <div class="back">
+        <h1>Para Macarena 💖</h1>
+
+        <p>
+            Maki, desde que empezamos a salir, cada día con vos es especial.
+            Me encanta cómo sos, tu forma de pensar y lo bien que me hacés sentir.
+        </p>
+
+        <p>
+            Me gusta compartir momentos con vos, reírnos, hablar de todo
+            y sentir esa conexión que tenemos.
+        </p>
+
+        <p>
+            Gracias por estar en mi vida.  
+            Quiero seguir conociéndote y construyendo cosas lindas juntos ❤️
+        </p>
+    </div>
+</div>
+```
+
+</div>
+
+<!-- Música romántica opcional -->
+
+<audio id="musica" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_1a8caa06f5.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* Abrir carta + música */
+function abrirCarta(el){
+    el.classList.toggle("open");
+
+    let audio=document.getElementById("musica");
+    if(audio.paused){
+        audio.play();
+    }
+}
+
+/* Crear corazones */
+function crearCorazon(){
+    const heart=document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML="❤️";
+
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(3+Math.random()*5)+"s";
+    heart.style.fontSize=(15+Math.random()*25)+"px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),8000);
+}
+
+setInterval(crearCorazon,300);
+
+</script>
+
 </body>
 </html>
