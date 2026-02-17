@@ -3,129 +3,122 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ff2e63">
+<title>Maki ❤️</title>
 
-<!-- Optimización mobile -->
+<!-- PWA -->
 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<title>Para Maki ❤️</title>
+<link rel="manifest" href="/static/manifest.json">
 
 <style>
-/* Reset mobile */
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    -webkit-tap-highlight-color: transparent;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 body{
-    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#ff2e63,#ff7aa2);
     height:100vh;
-    width:100vw;
     overflow:hidden;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
     display:flex;
     justify-content:center;
     align-items:center;
-}
-
-/* Corazones */
-.heart{
-    position:absolute;
-    color:white;
-    opacity:0.85;
-    animation:fall linear infinite;
-}
-@keyframes fall{
-    from{transform:translateY(-10vh) rotate(0);}
-    to{transform:translateY(110vh) rotate(360deg);}
-}
-
-/* Contenedor */
-.container{
-    width:92vw;
-    max-width:420px;
-    perspective:1200px;
 }
 
 /* Carta */
-.envelope{
-    position:relative;
-    width:100%;
-    height:65vh;
-    cursor:pointer;
+.container{
+    perspective:1000px;
 }
 
-.front, .back{
+.card{
+    width:90vw;
+    max-width:400px;
+    height:60vh;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:1s;
+}
+
+.card.open{
+    transform:rotateY(180deg);
+}
+
+.front, .inside{
     position:absolute;
     width:100%;
     height:100%;
-    border-radius:18px;
+    border-radius:20px;
     backface-visibility:hidden;
-    transition:1.3s;
-}
-
-/* Frente */
-.front{
-    background:white;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:3em;
-    color:#ff4b7d;
-    box-shadow:0 12px 35px rgba(0,0,0,0.3);
-}
-
-/* Interior */
-.back{
-    background:rgba(255,255,255,0.2);
-    backdrop-filter:blur(20px);
-    transform:rotateY(180deg);
-    color:white;
-    padding:25px 20px;
+    padding:20px;
     text-align:center;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
 }
 
-/* Animación */
-.envelope.open .front{
-    transform:rotateY(180deg);
-}
-.envelope.open .back{
-    transform:rotateY(360deg);
-}
-
-h1{
-    font-size:1.5em;
-    margin-bottom:15px;
-}
-
-p{
-    font-size:1em;
-    line-height:1.6;
-}
-
-/* Botón opcional */
-.btn{
-    margin-top:15px;
-    padding:10px;
-    border-radius:30px;
-    border:none;
-    font-size:1em;
+.front{
     background:white;
-    color:#ff4b7d;
+    cursor:pointer;
 }
 
-/* Pantalla completa al cargar */
-.fullscreen{
+.front h2{
+    color:#ff2e63;
+}
+
+.inside{
+    background:#fff0f5;
+    transform:rotateY(180deg);
+    flex-direction:column;
+}
+
+.inside h1{
+    color:#ff2e63;
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+.inside p{
+    font-size:18px;
+    color:#444;
+}
+
+/* corazones */
+.heart{
+    position:absolute;
+    color:red;
+    animation:fall linear infinite;
+    font-size:20px;
+}
+
+@keyframes fall{
+    from{
+        transform:translateY(-10vh);
+    }
+    to{
+        transform:translateY(110vh);
+    }
+}
+
+/* pantalla completa tipo app */
+html, body{
+    height:100%;
+}
+
+/* botón instalar */
+.install-btn{
     position:fixed;
-    inset:0;
+    bottom:20px;
+    right:20px;
+    background:#ff2e63;
+    color:white;
+    border:none;
+    padding:12px 18px;
+    border-radius:50px;
+    font-size:16px;
+    display:none;
 }
 </style>
 
@@ -133,75 +126,66 @@ p{
 
 <body>
 
-<div class="container fullscreen">
-    <div class="envelope" onclick="abrirCarta(this)">
-        <div class="front">💌</div>
+<div class="container">
+    <div class="card" id="card">
+        <div class="front" onclick="openCard()">
+            <h2>💌 Tocá para abrir</h2>
+        </div>
 
 ```
-    <div class="back">
-        <h1>Macarena ❤️</h1>
-
+    <div class="inside">
+        <h1>Maki ❤️</h1>
         <p>
-            Maki, cada día que paso con vos es especial.
-            Me encanta cómo sos, tu energía y lo bien que me hacés sentir.
+            Desde que llegaste a mi vida todo es más lindo.<br><br>
+            Me encanta cada momento con vos.<br>
+            Sos especial, única y quiero seguir creando recuerdos juntos.<br><br>
+            Te quiero muchísimo 💕
         </p>
-
-        <p>
-            Gracias por compartir este tiempo conmigo.
-            Quiero seguir conociéndote, riéndonos y viviendo momentos lindos juntos.
-        </p>
-
-        <p>
-            Me hacés muy feliz 💖
-        </p>
-
-        <button class="btn">Siempre vos</button>
     </div>
 </div>
 ```
 
 </div>
 
-<audio id="musica" loop>
-<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_1a8caa06f5.mp3">
-</audio>
+<button class="install-btn" id="installBtn">Instalar ❤️</button>
 
 <script>
-
-/* Pantalla completa */
-window.onload=()=>{
-    if(document.documentElement.requestFullscreen){
-        document.documentElement.requestFullscreen().catch(()=>{});
-    }
-};
-
-/* Carta + música */
-function abrirCarta(el){
-    el.classList.toggle("open");
-
-    let audio=document.getElementById("musica");
-    if(audio.paused){
-        audio.play();
-    }
+function openCard(){
+    document.getElementById("card").classList.toggle("open");
 }
 
-/* Corazones optimizados */
-function crearCorazon(){
-    const heart=document.createElement("div");
-    heart.className="heart";
+/* corazones */
+function createHearts(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
     heart.innerHTML="❤️";
-
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.animationDuration=(4+Math.random()*4)+"s";
-    heart.style.fontSize=(14+Math.random()*20)+"px";
-
+    heart.style.left = Math.random()*100+"vw";
+    heart.style.animationDuration = (Math.random()*3+3)+"s";
     document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),9000);
+
+    setTimeout(()=>{heart.remove()},6000);
 }
+setInterval(createHearts,300);
 
-/* Menos consumo batería */
-setInterval(crearCorazon,450);
+/* PWA instalar */
+let deferredPrompt;
+const btn = document.getElementById("installBtn");
 
+window.addEventListener("beforeinstallprompt", (e)=>{
+    e.preventDefault();
+    deferredPrompt = e;
+    btn.style.display="block";
+});
+
+btn.addEventListener("click", async ()=>{
+    btn.style.display="none";
+    deferredPrompt.prompt();
+});
+
+/* service worker */
+if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("/static/sw.js");
+}
 </script>
 
 </body>

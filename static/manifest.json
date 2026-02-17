@@ -1,0 +1,16 @@
+{
+  "name": "Para Maki ❤️",
+  "short_name": "Maki",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ff758c",
+  "theme_color": "#ff758c",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
