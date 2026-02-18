@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#111111">
-<title>Regalo Especial</title>
+<meta name="theme-color" content="#000000">
+<title>Regalo</title>
 
 <style>
 body{
@@ -13,91 +13,121 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background: radial-gradient(circle at center, #1a1a1a, #000);
-    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at center, #111, #000);
     overflow:hidden;
-    perspective:1000px;
-    color:white;
+    font-family: system-ui, sans-serif;
+    perspective:1200px;
 }
 
-/* Escena 3D */
+/* Escena */
 .scene{
+    width:260px;
+    height:260px;
+}
+
+/* Regalo */
+.gift{
     width:220px;
     height:220px;
     position:relative;
     transform-style:preserve-3d;
+    animation: float 3s ease-in-out infinite;
+    cursor:pointer;
 }
 
-.gift{
-    width:200px;
-    height:200px;
-    position:absolute;
-    transform-style:preserve-3d;
-    transition: transform 1.2s ease;
+/* Flotar */
+@keyframes float{
+    0%,100%{ transform: translateY(0) rotateY(0deg); }
+    50%{ transform: translateY(-20px) rotateY(8deg); }
 }
 
 .gift.open{
-    transform: rotateY(360deg);
+    animation:none;
 }
 
-/* Caja base */
+/* Caja */
 .box{
+    width:100%;
+    height:100%;
+    background:linear-gradient(145deg,#c10000,#ff0000);
+    border-radius:20px;
     position:absolute;
-    width:200px;
-    height:200px;
-    background:linear-gradient(145deg,#c40000,#ff0000);
-    border-radius:15px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.6);
-    transform:translateZ(0);
+    box-shadow:
+        inset -8px -8px 20px rgba(0,0,0,0.6),
+        inset 8px 8px 15px rgba(255,255,255,0.2),
+        0 20px 40px rgba(0,0,0,0.8);
 }
 
-/* Cinta vertical */
-.ribbon-vertical{
+/* Cintas */
+.ribbon-v{
+    width:32px;
+    height:100%;
+    background:linear-gradient(#ffe066,#ffcc00);
     position:absolute;
-    width:30px;
-    height:200px;
-    background:linear-gradient(#ffd700,#ffcc00);
-    left:85px;
+    left:50%;
+    transform:translateX(-50%);
 }
 
-/* Cinta horizontal */
-.ribbon-horizontal{
+.ribbon-h{
+    height:32px;
+    width:100%;
+    background:linear-gradient(#ffe066,#ffcc00);
     position:absolute;
-    width:200px;
-    height:30px;
-    background:linear-gradient(#ffd700,#ffcc00);
-    top:85px;
+    top:50%;
+    transform:translateY(-50%);
 }
 
 /* Tapa */
 .lid{
+    width:240px;
+    height:70px;
+    background:linear-gradient(145deg,#d90000,#ff1a1a);
     position:absolute;
-    width:220px;
-    height:60px;
-    background:linear-gradient(145deg,#d80000,#ff1a1a);
-    top:-50px;
+    top:-60px;
     left:-10px;
-    border-radius:15px;
+    border-radius:20px;
     transform-origin:bottom;
-    transition: transform 1.2s ease;
-    box-shadow:0 10px 25px rgba(0,0,0,0.5);
+    transition:1.2s cubic-bezier(.3,.7,.3,1);
+    box-shadow:
+        inset -5px -5px 15px rgba(0,0,0,0.5),
+        inset 5px 5px 10px rgba(255,255,255,0.2),
+        0 10px 30px rgba(0,0,0,0.7);
 }
 
 .gift.open .lid{
-    transform: rotateX(-120deg);
+    transform: rotateX(-140deg);
 }
 
-/* Moño */
+/* Moño realista */
 .bow{
     position:absolute;
-    width:60px;
-    height:60px;
-    background:radial-gradient(circle,#ffe066,#ffcc00);
-    border-radius:50%;
-    top:-70px;
+    top:-95px;
     left:50%;
     transform:translateX(-50%);
-    box-shadow:0 0 20px gold;
+    width:80px;
+    height:50px;
+}
+
+.loop{
+    position:absolute;
+    width:40px;
+    height:50px;
+    background:linear-gradient(#ffd700,#ffcc00);
+    border-radius:50% 50% 40% 40%;
+}
+
+.loop.left{ left:0; transform:rotate(-20deg);}
+.loop.right{ right:0; transform:rotate(20deg);}
+
+.knot{
+    width:26px;
+    height:26px;
+    background:linear-gradient(#ffe066,#ffcc00);
+    border-radius:50%;
+    position:absolute;
+    left:50%;
+    top:12px;
+    transform:translateX(-50%);
 }
 
 /* Contenido */
@@ -109,101 +139,112 @@ body{
     text-align:center;
     opacity:0;
     transition:1s;
-    width:90%;
+    width:92%;
 }
 
 .content img{
     width:100%;
-    max-width:300px;
     border-radius:20px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.7);
+    box-shadow:0 20px 50px rgba(0,0,0,0.8);
 }
 
 .message{
+    color:white;
     margin-top:15px;
     font-size:20px;
     min-height:28px;
-    letter-spacing:1px;
 }
 
-.show{
-    opacity:1;
-}
+.show{ opacity:1; }
 
-/* Brillos */
+/* Partículas */
 .sparkle{
     position:absolute;
     width:6px;
     height:6px;
     background:white;
     border-radius:50%;
-    animation: sparkle 1.5s ease-out forwards;
+    animation: spark 1.4s ease-out forwards;
 }
 
-@keyframes sparkle{
-    0%{ transform: scale(0) translateY(0); opacity:1; }
-    100%{ transform: scale(1.5) translateY(-200px); opacity:0; }
+@keyframes spark{
+    0%{ transform:scale(0); opacity:1;}
+    100%{ transform:translateY(-220px) scale(1.4); opacity:0;}
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="scene">
-    <div class="gift" id="gift">
-        <div class="lid"></div>
-        <div class="box">
-            <div class="ribbon-vertical"></div>
-            <div class="ribbon-horizontal"></div>
-        </div>
-        <div class="bow"></div>
+<div class="gift" id="gift">
+
+    <div class="lid"></div>
+
+    <div class="box">
+        <div class="ribbon-v"></div>
+        <div class="ribbon-h"></div>
     </div>
+
+    <div class="bow">
+        <div class="loop left"></div>
+        <div class="loop right"></div>
+        <div class="knot"></div>
+    </div>
+
+</div>
 </div>
 
 <div class="content" id="content">
     <!-- CAMBIÁ LA FOTO -->
-    <img src="https://picsum.photos/500/600" alt="foto">
-    <!-- MENSAJE AUTOMÁTICO -->
-    <div class="message" id="message"></div>
+    <img src="https://picsum.photos/500/600">
+    <div class="message" id="msg"></div>
 </div>
 
 <script>
 const gift = document.getElementById("gift");
 const content = document.getElementById("content");
-const message = document.getElementById("message");
+const msg = document.getElementById("msg");
 
-const text = "Feliz cumpleaños ❤️ Gracias por ser tan especial.";
+const text = "Feliz cumpleaños ❤️ Gracias por existir.";
 
 gift.addEventListener("click", () => {
 
     gift.classList.add("open");
 
+    /* Vibración móvil */
+    if(navigator.vibrate){
+        navigator.vibrate([200,80,200,80,300]);
+    }
+
+    /* Partículas */
+    for(let i=0;i<80;i++){
+        let s = document.createElement("div");
+        s.classList.add("sparkle");
+        s.style.left = Math.random()*window.innerWidth+"px";
+        s.style.top = Math.random()*window.innerHeight+"px";
+        document.body.appendChild(s);
+        setTimeout(()=>s.remove(),1400);
+    }
+
     setTimeout(()=>{
         content.classList.add("show");
-        typeWriter();
+        write();
     },1000);
-
-    for(let i=0;i<60;i++){
-        let sparkle = document.createElement("div");
-        sparkle.classList.add("sparkle");
-        sparkle.style.left = Math.random()*window.innerWidth+"px";
-        sparkle.style.top = Math.random()*window.innerHeight+"px";
-        sparkle.style.animationDuration = (Math.random()*1+1)+"s";
-        document.body.appendChild(sparkle);
-        setTimeout(()=>sparkle.remove(),1500);
-    }
 });
 
-function typeWriter(){
+/* Mensaje escribiéndose */
+function write(){
     let i=0;
-    function typing(){
+    function t(){
         if(i < text.length){
-            message.innerHTML += text.charAt(i);
+            msg.innerHTML += text[i];
             i++;
-            setTimeout(typing,50);
+            setTimeout(t,40);
         }
     }
-    typing();
+    t();
 }
 </script>
 
