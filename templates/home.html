@@ -162,17 +162,31 @@ body{
 /* Partículas */
 .sparkle{
     position:absolute;
-    width:6px;
-    height:6px;
-    background:white;
+    width:10px;
+    height:10px;
+    background: radial-gradient(circle, #fff, #ffd700, transparent);
     border-radius:50%;
-    animation: spark 1.4s ease-out forwards;
+    box-shadow:
+        0 0 10px #fff,
+        0 0 20px #ffd700,
+        0 0 40px #ffcc00;
+    animation: spark 2s ease-out forwards;
 }
 
 @keyframes spark{
-    0%{ transform:scale(0); opacity:1;}
-    100%{ transform:translateY(-220px) scale(1.4); opacity:0;}
+    0%{
+        transform: scale(0.3) translateY(0);
+        opacity:1;
+    }
+    50%{
+        opacity:1;
+    }
+    100%{
+        transform: translateY(-350px) scale(1.8) rotate(180deg);
+        opacity:0;
+    }
 }
+
 /* Botón */
 #openBtn{
     position:fixed;
