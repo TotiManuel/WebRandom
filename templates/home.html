@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#000000">
-<title>Regalo</title>
-
+<meta name="theme-color" content="#000000"> 
+<title>Maki ❤️</title>
+<link rel="manifest" href="/static/manifest.json">
 <style>
 body{
     margin:0;
@@ -248,6 +248,7 @@ body{
 </div>
 </div>
 <button id="openBtn">Tengo algo para vos 💌</button>
+<button class="install-btn" id="installBtn">Instalar ❤️</button>
 
 <div class="content" id="content">
     <!-- CAMBIÁ LA FOTO -->
@@ -256,6 +257,25 @@ body{
 </div>
 
 <script>
+/* PWA instalar */
+let deferredPrompt;
+const btn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e)=>{
+    e.preventDefault();
+    deferredPrompt = e;
+    btn.style.display="block";
+});
+
+btn.addEventListener("click", async ()=>{
+    btn.style.display="none";
+    deferredPrompt.prompt();
+});
+
+/* service worker */
+if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("/static/sw.js");
+}
 const gift = document.getElementById("gift");
 const content = document.getElementById("content");
 const msg = document.getElementById("msg");
