@@ -278,8 +278,9 @@ function abrirRegalo(){
     for(let i=0;i<120;i++){
         let s = document.createElement("div");
         s.classList.add("sparkle");
-        s.style.left = Math.random()*window.innerWidth+"px";
-        s.style.top = Math.random()*window.innerHeight+"px";
+        s.style.left = (window.innerWidth/2 + (Math.random()-0.5)*200) + "px";
+        s.style.top = (window.innerHeight/2 + (Math.random()-0.5)*200) + "px";
+        s.style.animationDuration = (1.5 + Math.random()) + "s";
         document.body.appendChild(s);
         setTimeout(()=>s.remove(),1500);
     }
