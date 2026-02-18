@@ -173,6 +173,41 @@ body{
     0%{ transform:scale(0); opacity:1;}
     100%{ transform:translateY(-220px) scale(1.4); opacity:0;}
 }
+/* Botón */
+#openBtn{
+    position:fixed;
+    bottom:40px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:14px 26px;
+    border:none;
+    border-radius:40px;
+    background:linear-gradient(145deg,#ffd700,#ffcc00);
+    font-size:18px;
+    font-weight:bold;
+    box-shadow:0 10px 25px rgba(0,0,0,0.6);
+    cursor:pointer;
+    z-index:10;
+}
+
+/* Luz dorada */
+.light{
+    position:absolute;
+    width:200px;
+    height:200px;
+    background:radial-gradient(circle,#ffd700,transparent 70%);
+    top:40%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    transition:1s;
+    pointer-events:none;
+}
+
+.light.show{
+    transform:translate(-50%,-50%) scale(3);
+    opacity:1;
+}
 
 </style>
 </head>
@@ -180,6 +215,7 @@ body{
 <body>
 
 <div class="scene">
+    <div class="light" id="light"></div>
 <div class="gift" id="gift">
 
     <div class="lid"></div>
@@ -197,6 +233,7 @@ body{
 
 </div>
 </div>
+<button id="openBtn">Abrir regalo 🎁</button>
 
 <div class="content" id="content">
     <!-- CAMBIÁ LA FOTO -->
@@ -208,41 +245,44 @@ body{
 const gift = document.getElementById("gift");
 const content = document.getElementById("content");
 const msg = document.getElementById("msg");
+const btn = document.getElementById("openBtn");
+const light = document.getElementById("light");
 
 const text = "Feliz cumpleaños ❤️ Gracias por existir.";
 
 function abrirRegalo(){
 
     gift.classList.add("open");
+    light.classList.add("show");
 
     if(navigator.vibrate){
         navigator.vibrate([200,80,200,80,300]);
     }
 
-    for(let i=0;i<80;i++){
+    /* Partículas mágicas */
+    for(let i=0;i<120;i++){
         let s = document.createElement("div");
         s.classList.add("sparkle");
         s.style.left = Math.random()*window.innerWidth+"px";
         s.style.top = Math.random()*window.innerHeight+"px";
         document.body.appendChild(s);
-        setTimeout(()=>s.remove(),1400);
+        setTimeout(()=>s.remove(),1500);
     }
+
+    btn.style.display = "none";
 
     setTimeout(()=>{
         content.classList.add("show");
-        write();
+        escribir();
     },1000);
 }
 
-/* PC */
+/* PC y celular */
 gift.addEventListener("click", abrirRegalo);
-
-/* CELULAR */
 gift.addEventListener("touchstart", abrirRegalo);
+btn.addEventListener("click", abrirRegalo);
 
-
-/* Mensaje escribiéndose */
-function write(){
+function escribir(){
     let i=0;
     function t(){
         if(i < text.length){
@@ -253,6 +293,7 @@ function write(){
     }
     t();
 }
+
 </script>
 
 </body>
