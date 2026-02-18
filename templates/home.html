@@ -233,10 +233,59 @@ body{
     display:none;
     z-index:20;
 }
+/* Splash */
+#splash{
+    position:fixed;
+    inset:0;
+    background: radial-gradient(circle at center,#111,#000);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    transition:opacity .8s ease;
+}
+
+/* Corazón */
+.heart{
+    width:120px;
+    height:120px;
+    background:#ff2d55;
+    position:relative;
+    transform:rotate(-45deg);
+    animation: latir 1s infinite;
+    box-shadow:
+        0 0 40px #ff2d55,
+        0 0 80px #ff4d6d,
+        0 0 120px #ff758c;
+}
+
+.heart::before,
+.heart::after{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:120px;
+    background:#ff2d55;
+    border-radius:50%;
+}
+
+.heart::before{ top:-60px; left:0; }
+.heart::after{ left:60px; top:0; }
+
+@keyframes latir{
+    0%,100%{ transform:rotate(-45deg) scale(1); }
+    50%{ transform:rotate(-45deg) scale(1.15); }
+}
+
 </style>
 </head>
 
 <body>
+    <!-- Splash corazón -->
+<div id="splash">
+    <div class="heart"></div>
+</div>
+
 
 <div class="scene">
     <div class="light" id="light"></div>
@@ -336,6 +385,15 @@ function escribir(){
     }
     t();
 }
+/* Ocultar splash */
+window.addEventListener("load", ()=>{
+    setTimeout(()=>{
+        const splash = document.getElementById("splash");
+        splash.style.opacity = "0";
+        setTimeout(()=> splash.remove(), 800);
+    }, 2200); // tiempo visible del corazón
+});
+
 </script>
 
 </body>
