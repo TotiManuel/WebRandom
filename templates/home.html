@@ -2,159 +2,209 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Regalo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#111111">
+<title>Regalo Especial</title>
 
 <style>
-    body{
-        margin:0;
-        height:100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        background:linear-gradient(135deg,#ff7eb3,#ff758c);
-        font-family:Arial, Helvetica, sans-serif;
-        overflow:hidden;
-    }
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: radial-gradient(circle at center, #1a1a1a, #000);
+    font-family: 'Segoe UI', sans-serif;
+    overflow:hidden;
+    perspective:1000px;
+    color:white;
+}
 
-    /* Caja */
-    .gift{
-        position:relative;
-        width:180px;
-        height:180px;
-        cursor:pointer;
-    }
+/* Escena 3D */
+.scene{
+    width:220px;
+    height:220px;
+    position:relative;
+    transform-style:preserve-3d;
+}
 
-    .box{
-        width:100%;
-        height:100%;
-        background:#ff3b3b;
-        border-radius:10px;
-        position:absolute;
-        bottom:0;
-        transition:0.7s;
-    }
+.gift{
+    width:200px;
+    height:200px;
+    position:absolute;
+    transform-style:preserve-3d;
+    transition: transform 1.2s ease;
+}
 
-    .lid{
-        width:100%;
-        height:50px;
-        background:#ff5757;
-        border-radius:10px 10px 0 0;
-        position:absolute;
-        top:0;
-        transition:0.7s;
-    }
+.gift.open{
+    transform: rotateY(360deg);
+}
 
-    /* Moño */
-    .bow{
-        position:absolute;
-        width:40px;
-        height:40px;
-        background:gold;
-        border-radius:50%;
-        top:-20px;
-        left:50%;
-        transform:translateX(-50%);
-        z-index:2;
-    }
+/* Caja base */
+.box{
+    position:absolute;
+    width:200px;
+    height:200px;
+    background:linear-gradient(145deg,#c40000,#ff0000);
+    border-radius:15px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.6);
+    transform:translateZ(0);
+}
 
-    .gift.open .lid{
-        transform:translateY(-120px) rotate(-15deg);
-    }
+/* Cinta vertical */
+.ribbon-vertical{
+    position:absolute;
+    width:30px;
+    height:200px;
+    background:linear-gradient(#ffd700,#ffcc00);
+    left:85px;
+}
 
-    .gift.open .box{
-        transform:scale(1.1);
-    }
+/* Cinta horizontal */
+.ribbon-horizontal{
+    position:absolute;
+    width:200px;
+    height:30px;
+    background:linear-gradient(#ffd700,#ffcc00);
+    top:85px;
+}
 
-    /* Contenido */
-    .content{
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%,-50%);
-        text-align:center;
-        opacity:0;
-        transition:1s;
-    }
+/* Tapa */
+.lid{
+    position:absolute;
+    width:220px;
+    height:60px;
+    background:linear-gradient(145deg,#d80000,#ff1a1a);
+    top:-50px;
+    left:-10px;
+    border-radius:15px;
+    transform-origin:bottom;
+    transition: transform 1.2s ease;
+    box-shadow:0 10px 25px rgba(0,0,0,0.5);
+}
 
-    .content img{
-        width:220px;
-        border-radius:15px;
-        box-shadow:0 10px 25px rgba(0,0,0,0.3);
-    }
+.gift.open .lid{
+    transform: rotateX(-120deg);
+}
 
-    .content h2{
-        color:white;
-        margin-top:10px;
-    }
+/* Moño */
+.bow{
+    position:absolute;
+    width:60px;
+    height:60px;
+    background:radial-gradient(circle,#ffe066,#ffcc00);
+    border-radius:50%;
+    top:-70px;
+    left:50%;
+    transform:translateX(-50%);
+    box-shadow:0 0 20px gold;
+}
 
-    .show{
-        opacity:1;
-    }
+/* Contenido */
+.content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    opacity:0;
+    transition:1s;
+    width:90%;
+}
 
-    /* Brillos */
-    .sparkle{
-        position:absolute;
-        width:8px;
-        height:8px;
-        background:white;
-        border-radius:50%;
-        animation:spark 1.2s linear forwards;
-    }
+.content img{
+    width:100%;
+    max-width:300px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.7);
+}
 
-    @keyframes spark{
-        0%{transform:scale(0); opacity:1;}
-        100%{transform:scale(1.5) translateY(-120px); opacity:0;}
-    }
+.message{
+    margin-top:15px;
+    font-size:20px;
+    min-height:28px;
+    letter-spacing:1px;
+}
 
+.show{
+    opacity:1;
+}
+
+/* Brillos */
+.sparkle{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:white;
+    border-radius:50%;
+    animation: sparkle 1.5s ease-out forwards;
+}
+
+@keyframes sparkle{
+    0%{ transform: scale(0) translateY(0); opacity:1; }
+    100%{ transform: scale(1.5) translateY(-200px); opacity:0; }
+}
 </style>
 </head>
 
 <body>
 
-<div class="gift" id="gift">
-    <div class="lid"></div>
-    <div class="bow"></div>
-    <div class="box"></div>
+<div class="scene">
+    <div class="gift" id="gift">
+        <div class="lid"></div>
+        <div class="box">
+            <div class="ribbon-vertical"></div>
+            <div class="ribbon-horizontal"></div>
+        </div>
+        <div class="bow"></div>
+    </div>
 </div>
 
 <div class="content" id="content">
-    <!-- CAMBIÁ ESTA IMAGEN -->
-    <img src="https://picsum.photos/400/300" alt="foto">
-    <!-- CAMBIÁ ESTE MENSAJE -->
-    <h2>¡Feliz día! 🎉</h2>
+    <!-- CAMBIÁ LA FOTO -->
+    <img src="https://picsum.photos/500/600" alt="foto">
+    <!-- MENSAJE AUTOMÁTICO -->
+    <div class="message" id="message"></div>
 </div>
 
 <script>
-
 const gift = document.getElementById("gift");
 const content = document.getElementById("content");
+const message = document.getElementById("message");
+
+const text = "Feliz cumpleaños ❤️ Gracias por ser tan especial.";
 
 gift.addEventListener("click", () => {
 
     gift.classList.add("open");
 
-    // Mostrar foto y mensaje
     setTimeout(()=>{
         content.classList.add("show");
-    },600);
+        typeWriter();
+    },1000);
 
-    // Brillos
-    for(let i=0;i<40;i++){
+    for(let i=0;i<60;i++){
         let sparkle = document.createElement("div");
         sparkle.classList.add("sparkle");
-
         sparkle.style.left = Math.random()*window.innerWidth+"px";
         sparkle.style.top = Math.random()*window.innerHeight+"px";
-
-        sparkle.style.animationDuration = (Math.random()*1+0.5)+"s";
-
+        sparkle.style.animationDuration = (Math.random()*1+1)+"s";
         document.body.appendChild(sparkle);
-
-        setTimeout(()=>sparkle.remove(),1200);
+        setTimeout(()=>sparkle.remove(),1500);
     }
-
 });
 
+function typeWriter(){
+    let i=0;
+    function typing(){
+        if(i < text.length){
+            message.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing,50);
+        }
+    }
+    typing();
+}
 </script>
 
 </body>
