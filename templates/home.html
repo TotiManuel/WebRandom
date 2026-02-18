@@ -6,10 +6,13 @@
 <meta name="theme-color" content="#000000"> 
 <title>Maki ❤️</title>
 <link rel="manifest" href="/static/manifest.json">
+
 <style>
 body{
     margin:0;
     height:100vh;
+    min-height:100dvh;
+    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -25,6 +28,7 @@ body{
 .scene{
     width:260px;
     height:260px;
+    position:relative;
 }
 
 /* Regalo */
@@ -100,7 +104,7 @@ body{
     transform: rotateX(-140deg);
 }
 
-/* Moño realista */
+/* Moño */
 .bow{
     position:absolute;
     top:-95px;
@@ -132,16 +136,36 @@ body{
     transform:translateX(-50%);
 }
 
+/* Luz dorada */
+.light{
+    position:absolute;
+    width:200px;
+    height:200px;
+    background:radial-gradient(circle,#ffd700,transparent 70%);
+    top:40%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    transition:1s;
+    pointer-events:none;
+}
+
+.light.show{
+    transform:translate(-50%,-50%) scale(3);
+    opacity:1;
+}
+
 /* Contenido */
 .content{
-    position:absolute;
+    position:fixed;
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
     text-align:center;
     opacity:0;
     transition:1s;
-    width:92%;
+    width:90%;
+    max-width:350px;
 }
 
 .content img{
@@ -174,20 +198,11 @@ body{
 }
 
 @keyframes spark{
-    0%{
-        transform: scale(0.3) translateY(0);
-        opacity:1;
-    }
-    50%{
-        opacity:1;
-    }
-    100%{
-        transform: translateY(-350px) scale(1.8) rotate(180deg);
-        opacity:0;
-    }
+    0%{ transform: scale(0.3); opacity:1; }
+    100%{ transform: translateY(-350px) scale(1.8); opacity:0; }
 }
 
-/* Botón */
+/* Botón abrir */
 #openBtn{
     position:fixed;
     bottom:40px;
@@ -204,25 +219,20 @@ body{
     z-index:10;
 }
 
-/* Luz dorada */
-.light{
-    position:absolute;
-    width:200px;
-    height:200px;
-    background:radial-gradient(circle,#ffd700,transparent 70%);
-    top:40%;
-    left:50%;
-    transform:translate(-50%,-50%) scale(0);
-    opacity:0;
-    transition:1s;
-    pointer-events:none;
+/* Botón instalar */
+.install-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:10px 18px;
+    border:none;
+    border-radius:30px;
+    background:#ff4d6d;
+    color:white;
+    font-weight:bold;
+    display:none;
+    z-index:20;
 }
-
-.light.show{
-    transform:translate(-50%,-50%) scale(3);
-    opacity:1;
-}
-
 </style>
 </head>
 
@@ -230,45 +240,43 @@ body{
 
 <div class="scene">
     <div class="light" id="light"></div>
-<div class="gift" id="gift">
-
-    <div class="lid"></div>
-
-    <div class="box">
-        <div class="ribbon-v"></div>
-        <div class="ribbon-h"></div>
+    <div class="gift" id="gift">
+        <div class="lid"></div>
+        <div class="box">
+            <div class="ribbon-v"></div>
+            <div class="ribbon-h"></div>
+        </div>
+        <div class="bow">
+            <div class="loop left"></div>
+            <div class="loop right"></div>
+            <div class="knot"></div>
+        </div>
     </div>
-
-    <div class="bow">
-        <div class="loop left"></div>
-        <div class="loop right"></div>
-        <div class="knot"></div>
-    </div>
-
 </div>
-</div>
+
 <button id="openBtn">Tengo algo para vos 💌</button>
 <button class="install-btn" id="installBtn">Instalar ❤️</button>
 
 <div class="content" id="content">
-    <!-- CAMBIÁ LA FOTO -->
-    <img src="static\image.jpg">
+    <img src="/static/image.jpg">
     <div class="message" id="msg"></div>
 </div>
 
 <script>
+let alreadyOpened = false;
+
 /* PWA instalar */
 let deferredPrompt;
-const btn = document.getElementById("installBtn");
+const installBtn = document.getElementById("installBtn");
 
 window.addEventListener("beforeinstallprompt", (e)=>{
     e.preventDefault();
     deferredPrompt = e;
-    btn.style.display="block";
+    installBtn.style.display="block";
 });
 
-btn.addEventListener("click", async ()=>{
-    btn.style.display="none";
+installBtn.addEventListener("click", async ()=>{
+    installBtn.style.display="none";
     deferredPrompt.prompt();
 });
 
@@ -276,16 +284,18 @@ btn.addEventListener("click", async ()=>{
 if("serviceWorker" in navigator){
     navigator.serviceWorker.register("/static/sw.js");
 }
+
 const gift = document.getElementById("gift");
 const content = document.getElementById("content");
 const msg = document.getElementById("msg");
-const btn = document.getElementById("openBtn");
+const openBtn = document.getElementById("openBtn");
 const light = document.getElementById("light");
 
-const text = "Este regalo es para vos maki ❤️ Porque sos la persona más importante en mi vida. Gracias por hacerme tan feliz.";
-
+const text = "Este regalo es para vos Maki ❤️ Porque sos la persona más importante en mi vida. Gracias por hacerme tan feliz.";
 
 function abrirRegalo(){
+    if(alreadyOpened) return;
+    alreadyOpened = true;
 
     gift.classList.add("open");
     light.classList.add("show");
@@ -294,7 +304,6 @@ function abrirRegalo(){
         navigator.vibrate([200,80,200,80,300]);
     }
 
-    /* Partículas mágicas */
     for(let i=0;i<120;i++){
         let s = document.createElement("div");
         s.classList.add("sparkle");
@@ -302,10 +311,10 @@ function abrirRegalo(){
         s.style.top = (window.innerHeight/2 + (Math.random()-0.5)*200) + "px";
         s.style.animationDuration = (1.5 + Math.random()) + "s";
         document.body.appendChild(s);
-        setTimeout(()=>s.remove(),1500);
+        setTimeout(()=>s.remove(),2000);
     }
 
-    btn.style.display = "none";
+    openBtn.style.display = "none";
 
     setTimeout(()=>{
         content.classList.add("show");
@@ -313,10 +322,8 @@ function abrirRegalo(){
     },1000);
 }
 
-/* PC y celular */
 gift.addEventListener("click", abrirRegalo);
-gift.addEventListener("touchstart", abrirRegalo);
-btn.addEventListener("click", abrirRegalo);
+openBtn.addEventListener("click", abrirRegalo);
 
 function escribir(){
     let i=0;
@@ -329,7 +336,6 @@ function escribir(){
     }
     t();
 }
-
 </script>
 
 </body>
