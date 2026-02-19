@@ -88,11 +88,10 @@
         ];
 
         const winMessages = [
-            "🎉 ¡Has descubierto tu mensaje de amor! 💖",
-            "💌 ¡Sorpresa! Alguien te piensa con cariño 💕",
-            "🌹 ¡Felicidades! Tu corazón se alegra con este mensaje",
-            "💖 ¡Woohoo! Has desbloqueado un mensaje dulce y romántico",
-            "✨ ¡Maravilloso! Alguien te envía un abrazo virtual 💌"
+            "🎉 ¡Descubriste tu mensaje de amor! 💖",
+            "💌 ¡Sorpresa! Te pienso con cariño 💕",
+            "🌹 ¡Felicidades! Mi corazón se alegra con este mensaje",
+            "✨ ¡Maravilloso! Te envío un abrazo virtual 💌"
         ];
 
         function getRandomMessage(array) {
@@ -112,7 +111,7 @@
             if (guess === secretNumber) {
                 messageDiv.innerHTML = `
                     ${getRandomMessage(winMessages)}<br>
-                    <strong>"Maki, cada pensamiento mío lleva tu nombre y mi corazón sonríe por ti 💖"</strong><br>
+                    <strong>"Maki, cada pensamiento mío lleva tu nombre y mi corazón sonríe por vos 💖"</strong><br>
                     Intentos: ${attempts} 💖
                 `;
             } else if (guess < secretNumber) {
