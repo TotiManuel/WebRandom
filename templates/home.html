@@ -1,400 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#000000"> 
-<title>Maki ❤️</title>
-<link rel="manifest" href="/static/manifest.json">
-
-<style>
-body{
-    margin:0;
-    height:100vh;
-    min-height:100dvh;
-    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: radial-gradient(circle at center, #111, #000);
-    overflow:hidden;
-    font-family: system-ui, sans-serif;
-    perspective:1200px;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-}
-
-/* Escena */
-.scene{
-    width:260px;
-    height:260px;
-    position:relative;
-}
-
-/* Regalo */
-.gift{
-    width:220px;
-    height:220px;
-    position:relative;
-    transform-style:preserve-3d;
-    animation: float 3s ease-in-out infinite;
-    cursor:pointer;
-}
-
-/* Flotar */
-@keyframes float{
-    0%,100%{ transform: translateY(0) rotateY(0deg); }
-    50%{ transform: translateY(-20px) rotateY(8deg); }
-}
-
-.gift.open{
-    animation:none;
-}
-
-/* Caja */
-.box{
-    width:100%;
-    height:100%;
-    background:linear-gradient(145deg,#c10000,#ff0000);
-    border-radius:20px;
-    position:absolute;
-    box-shadow:
-        inset -8px -8px 20px rgba(0,0,0,0.6),
-        inset 8px 8px 15px rgba(255,255,255,0.2),
-        0 20px 40px rgba(0,0,0,0.8);
-}
-
-/* Cintas */
-.ribbon-v{
-    width:32px;
-    height:100%;
-    background:linear-gradient(#ffe066,#ffcc00);
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-}
-
-.ribbon-h{
-    height:32px;
-    width:100%;
-    background:linear-gradient(#ffe066,#ffcc00);
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-}
-
-/* Tapa */
-.lid{
-    width:240px;
-    height:70px;
-    background:linear-gradient(145deg,#d90000,#ff1a1a);
-    position:absolute;
-    top:-60px;
-    left:-10px;
-    border-radius:20px;
-    transform-origin:bottom;
-    transition:1.2s cubic-bezier(.3,.7,.3,1);
-    box-shadow:
-        inset -5px -5px 15px rgba(0,0,0,0.5),
-        inset 5px 5px 10px rgba(255,255,255,0.2),
-        0 10px 30px rgba(0,0,0,0.7);
-}
-
-.gift.open .lid{
-    transform: rotateX(-140deg);
-}
-
-/* Moño */
-.bow{
-    position:absolute;
-    top:-95px;
-    left:50%;
-    transform:translateX(-50%);
-    width:80px;
-    height:50px;
-}
-
-.loop{
-    position:absolute;
-    width:40px;
-    height:50px;
-    background:linear-gradient(#ffd700,#ffcc00);
-    border-radius:50% 50% 40% 40%;
-}
-
-.loop.left{ left:0; transform:rotate(-20deg);}
-.loop.right{ right:0; transform:rotate(20deg);}
-
-.knot{
-    width:26px;
-    height:26px;
-    background:linear-gradient(#ffe066,#ffcc00);
-    border-radius:50%;
-    position:absolute;
-    left:50%;
-    top:12px;
-    transform:translateX(-50%);
-}
-
-/* Luz dorada */
-.light{
-    position:absolute;
-    width:200px;
-    height:200px;
-    background:radial-gradient(circle,#ffd700,transparent 70%);
-    top:40%;
-    left:50%;
-    transform:translate(-50%,-50%) scale(0);
-    opacity:0;
-    transition:1s;
-    pointer-events:none;
-}
-
-.light.show{
-    transform:translate(-50%,-50%) scale(3);
-    opacity:1;
-}
-
-/* Contenido */
-.content{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    text-align:center;
-    opacity:0;
-    transition:1s;
-    width:90%;
-    max-width:350px;
-}
-
-.content img{
-    width:100%;
-    border-radius:20px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.8);
-}
-
-.message{
-    color:white;
-    margin-top:15px;
-    font-size:20px;
-    min-height:28px;
-}
-
-.show{ opacity:1; }
-
-/* Partículas */
-.sparkle{
-    position:absolute;
-    width:10px;
-    height:10px;
-    background: radial-gradient(circle, #fff, #ffd700, transparent);
-    border-radius:50%;
-    box-shadow:
-        0 0 10px #fff,
-        0 0 20px #ffd700,
-        0 0 40px #ffcc00;
-    animation: spark 2s ease-out forwards;
-}
-
-@keyframes spark{
-    0%{ transform: scale(0.3); opacity:1; }
-    100%{ transform: translateY(-350px) scale(1.8); opacity:0; }
-}
-
-/* Botón abrir */
-#openBtn{
-    position:fixed;
-    bottom:40px;
-    left:50%;
-    transform:translateX(-50%);
-    padding:14px 26px;
-    border:none;
-    border-radius:40px;
-    background:linear-gradient(145deg,#ffd700,#ffcc00);
-    font-size:18px;
-    font-weight:bold;
-    box-shadow:0 10px 25px rgba(0,0,0,0.6);
-    cursor:pointer;
-    z-index:10;
-}
-
-/* Botón instalar */
-.install-btn{
-    position:fixed;
-    top:20px;
-    right:20px;
-    padding:10px 18px;
-    border:none;
-    border-radius:30px;
-    background:#ff4d6d;
-    color:white;
-    font-weight:bold;
-    display:none;
-    z-index:20;
-}
-/* Splash */
-#splash{
-    position:fixed;
-    inset:0;
-    background: radial-gradient(circle at center,#111,#000);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-    transition:opacity .8s ease;
-}
-
-/* Corazón */
-.heart{
-    width:120px;
-    height:120px;
-    background:#ff2d55;
-    position:relative;
-    transform:rotate(-45deg);
-    animation: latir 1s infinite;
-    box-shadow:
-        0 0 40px #ff2d55,
-        0 0 80px #ff4d6d,
-        0 0 120px #ff758c;
-}
-
-.heart::before,
-.heart::after{
-    content:"";
-    position:absolute;
-    width:120px;
-    height:120px;
-    background:#ff2d55;
-    border-radius:50%;
-}
-
-.heart::before{ top:-60px; left:0; }
-.heart::after{ left:60px; top:0; }
-
-@keyframes latir{
-    0%,100%{ transform:rotate(-45deg) scale(1); }
-    50%{ transform:rotate(-45deg) scale(1.15); }
-}
-
-</style>
-</head>
-
-<body>
-    <!-- Splash corazón -->
-<div id="splash">
-    <div class="heart"></div>
-</div>
-
-
-<div class="scene">
-    <div class="light" id="light"></div>
-    <div class="gift" id="gift">
-        <div class="lid"></div>
-        <div class="box">
-            <div class="ribbon-v"></div>
-            <div class="ribbon-h"></div>
-        </div>
-        <div class="bow">
-            <div class="loop left"></div>
-            <div class="loop right"></div>
-            <div class="knot"></div>
-        </div>
-    </div>
-</div>
-
-<button id="openBtn">Tengo algo para vos 💌</button>
-<button class="install-btn" id="installBtn">Instalar ❤️</button>
-
-<div class="content" id="content">
-    <img src="/static/image.jpg">
-    <div class="message" id="msg"></div>
-</div>
-
-<script>
-let alreadyOpened = false;
-
-/* PWA instalar */
-let deferredPrompt;
-const installBtn = document.getElementById("installBtn");
-
-window.addEventListener("beforeinstallprompt", (e)=>{
-    e.preventDefault();
-    deferredPrompt = e;
-    installBtn.style.display="block";
-});
-
-installBtn.addEventListener("click", async ()=>{
-    installBtn.style.display="none";
-    deferredPrompt.prompt();
-});
-
-/* service worker */
-if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("/static/sw.js");
-}
-
-const gift = document.getElementById("gift");
-const content = document.getElementById("content");
-const msg = document.getElementById("msg");
-const openBtn = document.getElementById("openBtn");
-const light = document.getElementById("light");
-
-const text = "Este regalo es para vos Maki ❤️ Porque sos la persona más importante en mi vida. Gracias por hacerme tan feliz.";
-
-function abrirRegalo(){
-    if(alreadyOpened) return;
-    alreadyOpened = true;
-
-    gift.classList.add("open");
-    light.classList.add("show");
-
-    if(navigator.vibrate){
-        navigator.vibrate([200,80,200,80,300]);
-    }
-
-    for(let i=0;i<120;i++){
-        let s = document.createElement("div");
-        s.classList.add("sparkle");
-        s.style.left = (window.innerWidth/2 + (Math.random()-0.5)*200) + "px";
-        s.style.top = (window.innerHeight/2 + (Math.random()-0.5)*200) + "px";
-        s.style.animationDuration = (1.5 + Math.random()) + "s";
-        document.body.appendChild(s);
-        setTimeout(()=>s.remove(),2000);
-    }
-
-    openBtn.style.display = "none";
-
-    setTimeout(()=>{
-        content.classList.add("show");
-        escribir();
-    },1000);
-}
-
-gift.addEventListener("click", abrirRegalo);
-openBtn.addEventListener("click", abrirRegalo);
-
-function escribir(){
-    let i=0;
-    function t(){
-        if(i < text.length){
-            msg.innerHTML += text[i];
-            i++;
-            setTimeout(t,40);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubre el mensaje</title>
+    <!-- Actualizamos la ruta del manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/static/images/icon.png">
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #f0f4f8;
+            text-align: center;
         }
-    }
-    t();
-}
-/* Ocultar splash */
-window.addEventListener("load", ()=>{
-    setTimeout(()=>{
-        const splash = document.getElementById("splash");
-        splash.style.opacity = "0";
-        setTimeout(()=> splash.remove(), 800);
-    }, 2200); // tiempo visible del corazón
-});
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Descubre el mensaje secreto</h1>
+    <p>Ingresa un número entre 1 y 50 para adivinar el secreto:</p>
+    <input type="number" id="guess" min="1" max="50">
+    <button onclick="checkGuess()">¡Probar!</button>
+    <div id="message"></div>
 
-</script>
+    <script>
+        const secretNumber = Math.floor(Math.random() * 50) + 1;
+        let attempts = 0;
 
+        function checkGuess() {
+            const guess = parseInt(document.getElementById('guess').value);
+            const messageDiv = document.getElementById('message');
+            attempts++;
+
+            if (!guess || guess < 1 || guess > 50) {
+                messageDiv.textContent = "Ingresa un número válido entre 1 y 50.";
+                return;
+            }
+
+            if (guess === secretNumber) {
+                messageDiv.innerHTML = `🎉 ¡Correcto! Has descubierto el mensaje secreto:<br><strong>"Bienvenido a tu mundo secreto!"</strong><br>Intentos: ${attempts}`;
+            } else if (guess < secretNumber) {
+                messageDiv.textContent = "🔼 Muy bajo, intenta un número más alto.";
+            } else {
+                messageDiv.textContent = "🔽 Muy alto, intenta un número más bajo.";
+            }
+        }
+    </script>
+
+    <!-- Registramos el service worker con el nuevo nombre sw.js -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+            .then(() => console.log("Service Worker registrado"))
+            .catch(err => console.error("Error registrando SW:", err));
+        }
+    </script>
 </body>
 </html>
