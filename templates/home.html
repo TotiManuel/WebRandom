@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un mensaje para ti 💌</title>
+    <title>Maki 💌</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/static/images/icon.png">
 
@@ -52,7 +52,7 @@
             position: absolute;
             bottom: -50px;
             font-size: 26px;
-            animation: float 3s linear forwards;
+            animation: float 10s linear forwards;
             opacity: 0.9;
         }
 
@@ -71,7 +71,7 @@
 
 <body>
     <div class="container" id="main">
-        <h1 id="title">💖 Tengo algo para ti 💖</h1>
+        <h1 id="title">💖 Tengo algo para vos 💖</h1>
         <button id="openBtn" onclick="startLove()">Abrir 💌</button>
         <div id="message"></div>
     </div>
@@ -117,7 +117,7 @@
                 const msg = document.getElementById("message");
                 msg.innerHTML = randomMessage();
                 msg.style.opacity = 1;
-            }, 5000);
+            }, 3000);
         }
 
         if ('serviceWorker' in navigator) {
