@@ -3,8 +3,8 @@
   "short_name": "Maki",
   "start_url": "/home",
   "display": "standalone",
-  "background_color": "#f0f4f8",
-  "theme_color": "#4a90e2",
+  "background_color": "#ff9a9e",
+  "theme_color": "#ff6f91",
   "icons": [
     {
       "src": "/static/icon.png",

@@ -1,5 +1,5 @@
-const CACHE_NAME = "mensaje-cache-v1";
-const urlsToCache = ["/", "/static/images/icon.png", "/home"];
+const CACHE_NAME = "mensaje-romantico-cache-v1";
+const urlsToCache = ["/home", "/static/images/icon.png"];
 
 self.addEventListener("install", event => {
     event.waitUntil(

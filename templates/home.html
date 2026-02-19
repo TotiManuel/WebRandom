@@ -3,44 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descubre el mensaje</title>
-    <!-- Actualizamos la ruta del manifest -->
+    <title>Descubre tu mensaje de amor 💌</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/static/images/icon.png">
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background: #f0f4f8;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            text-align: center;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            padding: 12px 18px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input {
+            width: 80px;
             text-align: center;
         }
-        input, button {
-            padding: 10px;
-            font-size: 16px;
-            margin: 5px;
+
+        button {
+            background-color: #ff6f91;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
         }
+
+        button:hover {
+            background-color: #ff3d6b;
+        }
+
         #message {
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: 18px;
-            color: green;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h1>🔐 Descubre el mensaje secreto</h1>
-    <p>Ingresa un número entre 1 y 50 para adivinar el secreto:</p>
+    <h1>💖 Descubre tu mensaje 💖</h1>
+    <p>Ingresa un número del 1 al 50 y deja que el destino hable:</p>
     <input type="number" id="guess" min="1" max="50">
-    <button onclick="checkGuess()">¡Probar!</button>
+    <button onclick="checkGuess()">💌 Enviar 💌</button>
     <div id="message"></div>
 
     <script>
         const secretNumber = Math.floor(Math.random() * 50) + 1;
         let attempts = 0;
+
+        const lowMessages = [
+            "🔼 Muy bajo, prueba un número más grande 💖",
+            "🌸 Un poquito más alto, no te rindas",
+            "💌 Sube un poco, tu mensaje de amor espera",
+            "💕 Ese número es tímido, inténtalo más arriba",
+            "🌹 El amor está más arriba, sigue intentando"
+        ];
+
+        const highMessages = [
+            "🔽 Muy alto, prueba un número más pequeño 💖",
+            "🌸 Un poquito más bajo, sigue intentándolo",
+            "💌 Baja un poco, tu sorpresa está cerca",
+            "💕 Ese número es altivo, prueba uno más bajo",
+            "🌹 El mensaje de amor te espera abajo, inténtalo"
+        ];
+
+        const winMessages = [
+            "🎉 ¡Has descubierto tu mensaje de amor! 💖",
+            "💌 ¡Sorpresa! Alguien te piensa con cariño 💕",
+            "🌹 ¡Felicidades! Tu corazón se alegra con este mensaje",
+            "💖 ¡Woohoo! Has desbloqueado un mensaje dulce y romántico",
+            "✨ ¡Maravilloso! Alguien te envía un abrazo virtual 💌"
+        ];
+
+        function getRandomMessage(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
 
         function checkGuess() {
             const guess = parseInt(document.getElementById('guess').value);
@@ -48,21 +105,24 @@
             attempts++;
 
             if (!guess || guess < 1 || guess > 50) {
-                messageDiv.textContent = "Ingresa un número válido entre 1 y 50.";
+                messageDiv.textContent = "Por favor, ingresa un número entre 1 y 50 🌸";
                 return;
             }
 
             if (guess === secretNumber) {
-                messageDiv.innerHTML = `🎉 ¡Correcto! Has descubierto el mensaje secreto:<br><strong>"Bienvenido a tu mundo secreto!"</strong><br>Intentos: ${attempts}`;
+                messageDiv.innerHTML = `
+                    ${getRandomMessage(winMessages)}<br>
+                    <strong>"Eres increíble y alguien piensa en ti con mucho cariño 💕"</strong><br>
+                    Intentos: ${attempts} 💖
+                `;
             } else if (guess < secretNumber) {
-                messageDiv.textContent = "🔼 Muy bajo, intenta un número más alto.";
+                messageDiv.textContent = getRandomMessage(lowMessages);
             } else {
-                messageDiv.textContent = "🔽 Muy alto, intenta un número más bajo.";
+                messageDiv.textContent = getRandomMessage(highMessages);
             }
         }
     </script>
 
-    <!-- Registramos el service worker con el nuevo nombre sw.js -->
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
