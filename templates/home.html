@@ -3,130 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descubre tu mensaje de amor 💌</title>
+    <title>Un mensaje para ti 💌</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="/static/images/icon.png">
+
     <style>
         body {
+            margin: 0;
             font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
             background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
             text-align: center;
-            color: #fff;
+            color: white;
         }
 
-        h1 {
-            font-size: 2.2em;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-
-        input, button {
-            padding: 12px 18px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            outline: none;
-        }
-
-        input {
-            width: 80px;
-            text-align: center;
+        .container {
+            z-index: 2;
         }
 
         button {
-            background-color: #ff6f91;
+            padding: 14px 22px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            background: #ff4d6d;
             color: white;
             cursor: pointer;
             transition: 0.3s;
         }
 
         button:hover {
-            background-color: #ff3d6b;
+            background: #ff1e4d;
         }
 
         #message {
             margin-top: 25px;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 22px;
+            opacity: 0;
+            transition: 1.5s;
+        }
+
+        /* 💖 Corazones */
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            font-size: 24px;
+            animation: float 6s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.6);
+                opacity: 0;
+            }
         }
     </style>
 </head>
+
 <body>
-    <h1>💖 Descubre tu mensaje 💖</h1>
-    <p>Ingresa un número del 1 al 50 y deja que el destino hable:</p>
-    <input type="number" id="guess" min="1" max="50">
-    <button onclick="checkGuess()">💌 Enviar 💌</button>
-    <div id="message"></div>
+    <div class="container">
+        <h1>💖 Tengo algo para ti 💖</h1>
+        <button onclick="startLove()">Abrir 💌</button>
+        <div id="message"></div>
+    </div>
 
     <script>
-        const secretNumber = Math.floor(Math.random() * 50) + 1;
-        let attempts = 0;
-
-        const lowMessages = [
-            "🔼 Muy bajo, prueba un número más grande 💖",
-            "🌸 Un poquito más alto, no te rindas",
-            "💌 Sube un poco, tu mensaje de amor espera",
-            "💕 Ese número es tímido, inténtalo más arriba",
-            "🌹 El amor está más arriba, sigue intentando"
+        const messages = [
+            "Maki, desde que llegaste a mi vida, todo tiene más color y sentido 💖",
+            "Maki, cada día contigo es mi lugar favorito en el mundo 🌹",
+            "Maki, no sé cómo lo hiciste, pero te volviste mi persona favorita 💕",
+            "Maki, mi corazón te eligió sin preguntar y no quiere a nadie más 💞",
+            "Maki, eres la casualidad más hermosa que me pasó ✨"
         ];
 
-        const highMessages = [
-            "🔽 Muy alto, prueba un número más pequeño 💖",
-            "🌸 Un poquito más bajo, sigue intentándolo",
-            "💌 Baja un poco, tu sorpresa está cerca",
-            "💕 Ese número es altivo, prueba uno más bajo",
-            "🌹 El mensaje de amor te espera abajo, inténtalo"
-        ];
-
-        const winMessages = [
-            "🎉 ¡Descubriste tu mensaje de amor! 💖",
-            "💌 ¡Sorpresa! Te pienso con cariño 💕",
-            "🌹 ¡Felicidades! Mi corazón se alegra con este mensaje",
-            "✨ ¡Maravilloso! Te envío un abrazo virtual 💌"
-        ];
-
-        function getRandomMessage(array) {
-            return array[Math.floor(Math.random() * array.length)];
+        function randomMessage() {
+            return messages[Math.floor(Math.random() * messages.length)];
         }
 
-        function checkGuess() {
-            const guess = parseInt(document.getElementById('guess').value);
-            const messageDiv = document.getElementById('message');
-            attempts++;
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                let heart = document.createElement("div");
+                heart.className = "heart";
+                heart.innerHTML = "💖";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+                document.body.appendChild(heart);
 
-            if (!guess || guess < 1 || guess > 50) {
-                messageDiv.textContent = "Por favor, ingresa un número entre 1 y 50 🌸";
-                return;
-            }
-
-            if (guess === secretNumber) {
-                messageDiv.innerHTML = `
-                    ${getRandomMessage(winMessages)}<br>
-                    <strong>"Maki, cada pensamiento mío lleva tu nombre y mi corazón sonríe por vos 💖"</strong><br>
-                    Intentos: ${attempts} 💖
-                `;
-            } else if (guess < secretNumber) {
-                messageDiv.textContent = getRandomMessage(lowMessages);
-            } else {
-                messageDiv.textContent = getRandomMessage(highMessages);
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
             }
         }
-    </script>
 
-    <script>
+        function startLove() {
+            createHearts();
+
+            setTimeout(() => {
+                const msg = document.getElementById("message");
+                msg.innerHTML = randomMessage();
+                msg.style.opacity = 1;
+            }, 2500);
+        }
+
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
-            .then(() => console.log("Service Worker registrado"))
-            .catch(err => console.error("Error registrando SW:", err));
+            navigator.serviceWorker.register('/sw.js');
         }
     </script>
 </body>
