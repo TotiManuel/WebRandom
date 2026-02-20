@@ -1,7 +1,7 @@
 {
   "name": "Maki",
   "short_name": "Maki",
-  "start_url": "/home",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ff9a9e",
