@@ -85,7 +85,7 @@ h2{margin-top:0;}
 
 <div class="card" id="card">
 <h2>💖 Acertijo para vos, Maki 💖</h2>
-
+<button id="installBtn" style="display:none;">📲 Instalar</button>
 <p id="riddle">
 Tengo cuatro números que guardan un secreto.<br>
 No es una fecha, pero siempre está con vos.<br>
@@ -184,6 +184,29 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('/sw.js');
 }
 </script>
+<script>
+let deferredPrompt;
 
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // mostrar botón
+    installBtn.style.display = "block";
+});
+
+installBtn.addEventListener("click", async () => {
+    installBtn.style.display = "none";
+
+    deferredPrompt.prompt();
+
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log("Resultado:", outcome);
+
+    deferredPrompt = null;
+});
+</script>
 </body>
 </html>
