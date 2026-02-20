@@ -1,18 +1,20 @@
 {
-  "name": "Maki",
+  "name": "Maki ❤️",
   "short_name": "Maki",
-  "start_url": "/home",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ff9a9e",
   "theme_color": "#ff6f91",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "/static/icon.png",
+      "src": "/icon.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/static/icon.png",
+      "src": "/icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
