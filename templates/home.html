@@ -8,136 +8,181 @@
 <link rel="icon" href="/static/images/icon.png">
 
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        color: white;
-        text-align: center;
-    }
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+    text-align:center;
+    overflow:hidden;
+}
 
-    .card {
-        background: rgba(255,255,255,0.15);
-        padding: 30px;
-        border-radius: 20px;
-        backdrop-filter: blur(10px);
-        max-width: 400px;
-    }
+.card{
+    background:rgba(255,255,255,0.15);
+    padding:30px;
+    border-radius:20px;
+    backdrop-filter:blur(10px);
+    max-width:400px;
+}
 
-    input {
-        padding: 12px;
-        font-size: 18px;
-        border: none;
-        border-radius: 10px;
-        text-align: center;
-        width: 120px;
-    }
+h2{margin-top:0;}
 
-    button {
-        padding: 12px 18px;
-        border: none;
-        border-radius: 10px;
-        background: #ff4d6d;
-        color: white;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 10px;
-    }
+.display{
+    font-size:28px;
+    letter-spacing:8px;
+    margin:15px 0;
+}
 
-    button:hover {
-        background: #ff1e4d;
-    }
+.keypad{
+    display:grid;
+    grid-template-columns:repeat(3,70px);
+    gap:10px;
+    justify-content:center;
+}
 
-    #message {
-        margin-top: 20px;
-        font-size: 20px;
-        opacity: 0;
-        transition: 2s;
-    }
+.key{
+    padding:18px;
+    border:none;
+    border-radius:12px;
+    font-size:18px;
+    background:#ff4d6d;
+    color:white;
+    cursor:pointer;
+}
 
-    .heart {
-        position: fixed;
-        bottom: -50px;
-        font-size: 24px;
-        animation: float 8s linear forwards;
-    }
+.key:hover{background:#ff1e4d;}
 
-    @keyframes float {
-        to {
-            transform: translateY(-120vh);
-            opacity: 0;
-        }
+#message{
+    margin-top:20px;
+    font-size:22px;
+    opacity:0;
+    transition:2s;
+}
+
+/* 🎆 fuegos artificiales */
+.fire{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    animation:explode 1.5s forwards;
+}
+
+@keyframes explode{
+    to{
+        transform:translate(var(--x),var(--y));
+        opacity:0;
     }
+}
 </style>
 </head>
 
 <body>
 
-<div class="card">
-    <h2>💖 Acertijo para vos, Maki 💖</h2>
-    <p>
-        Tengo cuatro números que guardan un secreto.<br>
-        Son parte de vos, y me hacen sonreír.<br>
-        No es una fecha, pero siempre la llevas con vos.<br>
-        Si los recordas… descubrirás mi mensaje 💌
-    </p>
+<div class="card" id="card">
+<h2>💖 Acertijo para vos, Maki 💖</h2>
 
-    <input id="code" type="password" placeholder="Clave">
-    <br>
-    <button onclick="checkCode()">Descubrir 💕</button>
+<p id="riddle">
+Tengo cuatro números que guardan un secreto.<br>
+No es una fecha, pero siempre está con vos.<br>
+Si los recuerdas… descubrirás mi corazón 💌
+</p>
 
-    <div id="message"></div>
+<div class="display" id="display">••••</div>
+
+<div class="keypad">
+<button class="key" onclick="press(1)">1</button>
+<button class="key" onclick="press(2)">2</button>
+<button class="key" onclick="press(3)">3</button>
+<button class="key" onclick="press(4)">4</button>
+<button class="key" onclick="press(5)">5</button>
+<button class="key" onclick="press(6)">6</button>
+<button class="key" onclick="press(7)">7</button>
+<button class="key" onclick="press(8)">8</button>
+<button class="key" onclick="press(9)">9</button>
+<button class="key" onclick="clearCode()">←</button>
+<button class="key" onclick="press(0)">0</button>
+<button class="key" onclick="check()">OK</button>
+</div>
+
+<div id="message"></div>
 </div>
 
 <script>
-    const correctCode = "1428";
+const correct="1428";
+let code="";
 
-    const loveMessages = [
-        "Maki, eres la persona más hermosa que llegó a mi vida 💖",
-        "Maki, contigo todo es mejor, incluso los días más simples 🌹",
-        "Maki, mi corazón te eligió y no quiere a nadie más 💞",
-        "Maki, gracias por existir y hacer mi mundo más feliz ✨",
-        "Maki, cada momento contigo es un regalo que atesoro 💕"
-    ];
+const love = [
+"Maki, desde que llegaste a mi vida todo cambió de una forma que nunca imaginé. Haces que los días simples se vuelvan especiales, que los momentos pequeños tengan un significado enorme y que mi corazón se sienta en paz. Me encanta tu forma de ser, tu sonrisa, tu mirada y todo lo que eres. Gracias por existir, por estar conmigo y por hacerme tan feliz. Quiero seguir creciendo a tu lado, cuidarte, apoyarte y construir un futuro juntos, paso a paso, con amor, paciencia y sueños compartidos. Porque si algo tengo claro, es que te elegiría una y mil veces más 💖"
+];
 
-    function randomLove() {
-        return loveMessages[Math.floor(Math.random() * loveMessages.length)];
+function press(n){
+    if(code.length<4){
+        code+=n;
+        updateDisplay();
     }
+}
 
-    function createHearts() {
-        for (let i = 0; i < 60; i++) {
-            let heart = document.createElement("div");
-            heart.className = "heart";
-            heart.innerHTML = "💖";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (Math.random() * 4 + 6) + "s";
-            document.body.appendChild(heart);
+function clearCode(){
+    code=code.slice(0,-1);
+    updateDisplay();
+}
 
-            setTimeout(() => heart.remove(), 10000);
-        }
+function updateDisplay(){
+    document.getElementById("display").textContent="•".repeat(code.length)+"•".repeat(4-code.length);
+}
+
+function randomLove(){
+    return love[Math.floor(Math.random()*love.length)];
+}
+
+/* 🎆 fuegos artificiales */
+function fireworks(){
+    for(let i=0;i<120;i++){
+        let p=document.createElement("div");
+        p.className="fire";
+        p.style.left=50+"vw";
+        p.style.top=50+"vh";
+        p.style.background=`hsl(${Math.random()*360},100%,60%)`;
+
+        let x=(Math.random()-0.5)*400+"px";
+        let y=(Math.random()-0.5)*400+"px";
+        p.style.setProperty("--x",x);
+        p.style.setProperty("--y",y);
+
+        document.body.appendChild(p);
+        setTimeout(()=>p.remove(),1500);
     }
+}
 
-    function checkCode() {
-        const input = document.getElementById("code").value;
-        const msg = document.getElementById("message");
+function check(){
+    if(code===correct){
 
-        if (input === correctCode) {
-            createHearts();
-            msg.innerHTML = randomLove();
-            msg.style.opacity = 1;
-        } else {
-            msg.innerHTML = "Ups… esa no es la clave 💭 intenta recordar mejor 💕";
-            msg.style.opacity = 1;
-        }
+        fireworks();
+
+        /* desaparecer acertijo */
+        document.getElementById("riddle").style.display="none";
+        document.querySelector(".keypad").style.display="none";
+        document.getElementById("display").style.display="none";
+
+        let msg=document.getElementById("message");
+        msg.innerHTML=randomLove();
+        msg.style.opacity=1;
+
+    }else{
+        alert("Casi… intenta recordar mejor 💭💕");
+        code="";
+        updateDisplay();
     }
+}
 
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
-    }
+if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/sw.js');
+}
 </script>
 
 </body>
