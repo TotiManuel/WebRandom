@@ -134,6 +134,21 @@ h2{margin-top:0;}
 #installBtn:hover::after{
     opacity:1;
 }
+.dot{
+    display:inline-block;
+    width:14px;
+    height:14px;
+    margin:0 6px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.4);
+    transition:0.3s;
+}
+
+/* 💖 punto activo */
+.dot.active{
+    background:#ff1e4d;
+    box-shadow:0 0 10px #ff1e4d;
+}
 </style>
 </head>
 
@@ -147,7 +162,12 @@ No es una fecha, pero siempre está con vos.<br>
 Si los recuerdas… descubrirás mi corazón 💌
 </p>
 
-<div class="display" id="display">••••</div>
+<div class="display" id="display">
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+</div>
 
 <div class="keypad">
 <button class="key" onclick="press(1)">1</button>
@@ -188,7 +208,15 @@ function clearCode(){
 }
 
 function updateDisplay(){
-    document.getElementById("display").textContent="•".repeat(code.length)+"•".repeat(4-code.length);
+    const dots = document.querySelectorAll(".dot");
+
+    dots.forEach((dot, i) => {
+        if(i < code.length){
+            dot.classList.add("active");
+        }else{
+            dot.classList.remove("active");
+        }
+    });
 }
 
 function randomLove(){
