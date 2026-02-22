@@ -220,19 +220,18 @@ function animate(){
 
 animate();
 
-/* 🎵 música */
-window.addEventListener("click",()=>{
-    const music = document.getElementById("music");
 
-    // intentar autoplay en silencio
-    music.muted = true;
-    music.play().catch(()=>{});
 
-    // después de unos segundos activar sonido
-    setTimeout(()=>{
-        music.muted = false;
-    }, 3000);
-});
+const music = document.getElementById("music");
+
+// intentar autoplay en silencio
+music.muted = true;
+music.play().catch(()=>{});
+
+// después de unos segundos activar sonido
+setTimeout(()=>{
+    music.muted = false;
+}, 3000);
 
 
 /* 📲 PWA */
