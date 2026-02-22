@@ -222,8 +222,18 @@ animate();
 
 /* 🎵 música */
 window.addEventListener("click",()=>{
-    document.getElementById("music").play();
+    const music = document.getElementById("music");
+
+    // intentar autoplay en silencio
+    music.muted = true;
+    music.play().catch(()=>{});
+
+    // después de unos segundos activar sonido
+    setTimeout(()=>{
+        music.muted = false;
+    }, 3000);
 });
+
 
 /* 📲 PWA */
 if('serviceWorker' in navigator){
