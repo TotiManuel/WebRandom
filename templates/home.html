@@ -95,12 +95,18 @@ window.addEventListener("resize", ()=>{
 let stars = [];
 const starGeo = new THREE.BufferGeometry();
 let starVertices = [];
+let starSizes = [];
 
-for(let i=0;i<2000;i++){
-    let x = (Math.random()-0.5)*800; // más profundidad
-    let y = (Math.random()-0.5)*800;
-    let z = (Math.random()-0.5)*800;
+for(let i=0;i<4000;i++){ // más estrellas
+
+    let x = (Math.random()-0.5)*1200;
+    let y = (Math.random()-0.5)*1200;
+    let z = (Math.random()-0.5)*1200;
+
     starVertices.push(x,y,z);
+
+    // tamaños variados (estrellas reales no son iguales)
+    starSizes.push(Math.random()*2);
 }
 
 starGeo.setAttribute(
@@ -108,12 +114,20 @@ starGeo.setAttribute(
     new THREE.Float32BufferAttribute(starVertices,3)
 );
 
+// atributo de tamaño individual
+starGeo.setAttribute(
+    'size',
+    new THREE.Float32BufferAttribute(starSizes,1)
+);
+
 let starMat = new THREE.PointsMaterial({
     color:0xffffff,
-    size:1.2,
+    size:2,
     transparent:true,
-    opacity:0.9,
-    sizeAttenuation:true
+    opacity:0.95,
+    sizeAttenuation:true,
+    blending:THREE.AdditiveBlending,
+    depthWrite:false
 });
 
 let starField = new THREE.Points(starGeo, starMat);
@@ -179,16 +193,19 @@ function createHeart(){
 
 
 /* 🌹 rosas */
-let roses=[];
+let roses = [];
+
 function createRose(){
 
-    // 🌹 forma más realista
-    let geo = new THREE.SphereGeometry(0.7,16,16);
+    // 🌹 forma más orgánica
+    let geo = new THREE.IcosahedronGeometry(0.7, 1);
 
     let mat = new THREE.MeshStandardMaterial({
-        color:0xff1e4d,
-        roughness:0.4,
-        metalness:0.2
+        color: 0xff1e4d,
+        roughness: 0.7,
+        metalness: 0.1,
+        emissive: 0x22000a,
+        emissiveIntensity: 0.4
     });
 
     let r = new THREE.Mesh(geo, mat);
@@ -259,7 +276,12 @@ function animate(){
 
     animateStars();
 
-    starField.rotation.y += 0.0008;
+    // ✨ brillo natural tipo cielo real
+    starMat.opacity = 0.85 + Math.sin(Date.now()*0.002)*0.15;
+
+    // rotación muy lenta espacial
+    starField.rotation.y += 0.0002;
+    starField.rotation.x += 0.00005;
 
     if(phase===0){
         timer+=0.01;
@@ -286,9 +308,9 @@ function animate(){
         if(Math.random()<0.2) createRose();
 
         roses.forEach(r=>{
-            r.position.y -=0.1;
-            r.rotation.x += 0.01;
-            r.rotation.y += 0.02;
+            r.position.y -= 0.05;
+            r.rotation.x += 0.002;
+            r.rotation.y += 0.003;
 
             if(r.position.y < -10){
                 r.position.y = 30;
