@@ -181,51 +181,42 @@ function animateStars(){
 }
 
 
-/* 💞 corazón partículas */
+/* 💞 corazón emoji */
 let heart;
+
 function createHeart(){
-    let geo = new THREE.BufferGeometry();
-    let pts = [];
 
-    // ❤️ más partículas + profundidad
-    for(let t=0;t<Math.PI*2;t+=0.02){
+    // ❤️ textura del emoji
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
 
-        let x = 16*Math.pow(Math.sin(t),3);
-        let y = 13*Math.cos(t)-5*Math.cos(2*t)
-            -2*Math.cos(3*t)-Math.cos(4*t);
+    const ctx = canvas.getContext("2d");
 
-        // profundidad volumétrica
-        for(let i=0;i<6;i++){
-            let z = (Math.random()-0.5)*2;
-            pts.push(x,y,z);
-        }
-    }
+    ctx.font = "200px serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("❤️", 128, 128);
 
-    geo.setAttribute('position',
-        new THREE.Float32BufferAttribute(pts,3)
-    );
+    const texture = new THREE.CanvasTexture(canvas);
 
-    let mat = new THREE.PointsMaterial({
-        color:0xff1e4d,
-        size:1.2,
-        transparent:true,
-        opacity:0.9,
-        sizeAttenuation:true
+    const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        depthWrite: false
     });
 
-    heart = new THREE.Points(geo, mat);
-    heart.scale.set(0.1,0.1,0.1);
+    heart = new THREE.Sprite(material);
 
-    // ✨ brillo romántico
-    heart.material.blending = THREE.AdditiveBlending;
+    // tamaño inicial
+    heart.scale.set(8, 8, 1);
+
+    heart.position.set(0, 0, 0);
 
     scene.add(heart);
 }
-
-
 /* 🌹 rosas */
 let roses = [];
-
 function createRose(){
 
     // 🌹 forma más orgánica
@@ -252,8 +243,6 @@ function createRose(){
     scene.add(r);
     roses.push(r);
 }
-
-
 /* ✨ nombre Maki */
 let nameParticles;
 function createName(){
@@ -297,7 +286,6 @@ function createName(){
 
     scene.add(nameParticles);
 }
-
 /* 🎬 animación */
 let phase = 0;
 let timer = 0;
@@ -326,8 +314,8 @@ function animate(){
         heart.scale.x += 0.01;
         heart.scale.y += 0.01;
 
-        let beat = Math.sin(Date.now()*0.004)*0.25+1;
-        heart.scale.set(beat,beat,beat);
+        let beat = Math.sin(Date.now()*0.005)*0.25 + 1;
+        heart.scale.set(8*beat, 8*beat, 1);
 
         timer+=0.01;
         if(timer>10){
@@ -357,13 +345,8 @@ function animate(){
 
     renderer.render(scene,camera);
 }
-
 animate();
-
-
-
 const music = document.getElementById("music");
-
 // intentar autoplay en silencio
 music.muted = true;
 music.play().catch(()=>{});
