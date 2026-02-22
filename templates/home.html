@@ -2,224 +2,159 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#000000">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maki ❤️</title>
-
-<link rel="manifest" href="/static/manifest.json">
-<link rel="icon" href="/static/images/icon.png">
 
 <style>
 body{
     margin:0;
-    font-family:'Segoe UI', sans-serif;
     overflow:hidden;
+    font-family:'Segoe UI',sans-serif;
     background:black;
-    color:white;
 }
 
-/* ❤️ pantalla carga */
-#splash{
-    position:fixed;
-    inset:0;
+/* escena 3D */
+.scene{
+    perspective:900px;
+    width:100vw;
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
-    background:black;
-    z-index:1000;
 }
 
-/* 💓 corazón */
+/* contenedor */
+.world{
+    position:relative;
+    width:100%;
+    height:100%;
+    transform-style:preserve-3d;
+    animation:camera 12s ease-in-out forwards;
+}
+
+/* ❤️ corazón 3D */
 .heart{
-    width:90px;
-    height:90px;
+    position:absolute;
+    width:120px;
+    height:120px;
     background:#ff2d55;
     transform:rotate(-45deg);
-    animation:beat 1s infinite;
-    position:relative;
+    animation:float 4s infinite ease-in-out;
 }
 .heart:before,
 .heart:after{
     content:"";
     position:absolute;
-    width:90px;
-    height:90px;
+    width:120px;
+    height:120px;
     background:#ff2d55;
     border-radius:50%;
 }
-.heart:before{top:-45px;}
-.heart:after{left:45px;}
+.heart:before{top:-60px;}
+.heart:after{left:60px;}
 
-@keyframes beat{
-    0%,100%{transform:scale(1) rotate(-45deg);}
-    50%{transform:scale(1.2) rotate(-45deg);}
+/* 🌟 estrellas */
+.star{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:white;
+    border-radius:50%;
+    animation:twinkle 2s infinite;
 }
 
-/* 🌸 pantalla principal */
-#main{
-    display:none;
-    height:100vh;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+/* 🌹 rosa simple */
+.rose{
+    position:absolute;
+    font-size:50px;
+    animation:float 6s infinite;
+}
+
+/* ✨ texto final */
+#final{
+    position:absolute;
+    inset:0;
     display:flex;
     justify-content:center;
     align-items:center;
     text-align:center;
-    padding:20px;
-}
-
-/* 💌 tarjeta */
-.card{
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(15px);
-    padding:30px;
-    border-radius:25px;
-    max-width:420px;
-}
-
-/* ✨ botones */
-button{
-    padding:14px 22px;
-    border:none;
-    border-radius:14px;
-    font-size:16px;
-    background:#ff2d55;
     color:white;
-    cursor:pointer;
-    margin-top:15px;
+    font-size:26px;
+    padding:30px;
+    opacity:0;
+    transition:2s;
 }
 
-/* 🎆 fuegos */
-.fire{
-    position:absolute;
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    animation:explode 1.3s forwards;
-}
-@keyframes explode{
-    to{
-        transform:translate(var(--x),var(--y));
-        opacity:0;
-    }
+/* animaciones */
+@keyframes float{
+    0%,100%{transform:translateY(0) rotate(-45deg);}
+    50%{transform:translateY(-40px) rotate(-45deg);}
 }
 
-/* 📲 instalar */
-#installBtn{
-    display:none;
+@keyframes twinkle{
+    0%,100%{opacity:0.2;}
+    50%{opacity:1;}
+}
+
+@keyframes camera{
+    0%{transform:translateZ(-600px) rotateX(15deg);}
+    40%{transform:translateZ(-200px) rotateX(0);}
+    70%{transform:translateZ(-100px);}
+    100%{transform:translateZ(0);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ❤️ splash -->
-<div id="splash">
-    <div class="heart"></div>
-    <p>Abriendo algo muy especial…</p>
+<div class="scene">
+    <div class="world" id="world"></div>
 </div>
 
-<!-- 🌸 app -->
-<div id="main">
-    <div class="card">
-
-        <button id="installBtn">📲 Instalar</button>
-
-        <h2>💖 Para vos, Maki 💖</h2>
-
-        <p id="text">
-            Desde que llegaste a mi vida todo cambió…  
-            pero esto es solo el comienzo.
-        </p>
-
-        <button onclick="next()">Siguiente 💌</button>
-
-    </div>
+<div id="final">
+💖 Maki…  
+Desde que llegaste, mi vida tiene sentido.  
+Quiero crecer con vos, cuidarte y elegirte cada día.  
+Porque no existe un futuro donde no estés.  
+Te amo hoy, mañana y siempre ❤️
 </div>
-
-<audio id="music" loop>
-<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5b2b6b14c6.mp3?filename=romantic-ambient-piano-110624.mp3">
-</audio>
 
 <script>
 
-/* ❤️ transición splash */
+/* generar estrellas */
+for(let i=0;i<80;i++){
+    let s=document.createElement("div");
+    s.className="star";
+    s.style.left=Math.random()*100+"vw";
+    s.style.top=Math.random()*100+"vh";
+    document.getElementById("world").appendChild(s);
+}
+
+/* corazones flotando */
+for(let i=0;i<7;i++){
+    let h=document.createElement("div");
+    h.className="heart";
+    h.style.left=Math.random()*100+"vw";
+    h.style.top=Math.random()*100+"vh";
+    h.style.animationDelay=Math.random()*2+"s";
+    document.getElementById("world").appendChild(h);
+}
+
+/* rosas */
+for(let i=0;i<5;i++){
+    let r=document.createElement("div");
+    r.className="rose";
+    r.innerHTML="🌹";
+    r.style.left=Math.random()*100+"vw";
+    r.style.top=Math.random()*100+"vh";
+    r.style.animationDelay=Math.random()*3+"s";
+    document.getElementById("world").appendChild(r);
+}
+
+/* final romántico */
 setTimeout(()=>{
-    document.getElementById("splash").style.display="none";
-    document.getElementById("main").style.display="flex";
-    document.getElementById("music").play();
-},2500);
-
-/* 💌 historia romántica */
-const msgs=[
-"Maki… no sé en qué momento te volviste mi lugar seguro 💖",
-"Me encanta tu sonrisa, tu mirada y la paz que me das.",
-"Quiero acompañarte en cada sueño, cada meta y cada día.",
-"No importa el tiempo ni la distancia… siempre te voy a elegir.",
-"Porque lo único que tengo claro… es que quiero un futuro con vos ❤️"
-];
-
-let i=0;
-
-function next(){
-    if(i < msgs.length){
-        document.getElementById("text").innerHTML = msgs[i];
-        fireworks();
-        i++;
-    }else{
-        final();
-    }
-}
-
-/* 🎆 fuegos */
-function fireworks(){
-    for(let j=0;j<80;j++){
-        let p=document.createElement("div");
-        p.className="fire";
-        p.style.left=50+"vw";
-        p.style.top=50+"vh";
-        p.style.background=`hsl(${Math.random()*360},100%,60%)`;
-
-        let x=(Math.random()-0.5)*350+"px";
-        let y=(Math.random()-0.5)*350+"px";
-        p.style.setProperty("--x",x);
-        p.style.setProperty("--y",y);
-
-        document.body.appendChild(p);
-        setTimeout(()=>p.remove(),1300);
-    }
-}
-
-/* 💖 final */
-function final(){
-    document.querySelector(".card").innerHTML=`
-    <h1>💍 ¿Querés seguir escribiendo esta historia conmigo?</h1>
-    <p>Porque yo quiero elegirte todos los días de mi vida ❤️</p>
-    `;
-    fireworks();
-}
-
-/* 📲 PWA */
-if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/sw.js');
-}
-
-let deferredPrompt;
-const installBtn=document.getElementById("installBtn");
-
-window.addEventListener("beforeinstallprompt",(e)=>{
-    e.preventDefault();
-    deferredPrompt=e;
-    installBtn.style.display="block";
-});
-
-installBtn.addEventListener("click",async ()=>{
-    installBtn.style.display="none";
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt=null;
-});
+    document.getElementById("final").style.opacity=1;
+},9000);
 
 </script>
 
