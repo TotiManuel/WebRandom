@@ -78,7 +78,7 @@ p{
     transform:scale(0.95);
 }
 
-/* Línea animada */
+/* Barra progreso */
 .line{
     position:absolute;
     bottom:0;
@@ -105,7 +105,7 @@ p{
     50%{opacity:1;}
 }
 
-/* Final especial */
+/* Corazón */
 .heart{
     font-size:60px;
     animation:pulse 1.5s infinite;
@@ -115,6 +115,24 @@ p{
     0%{transform:scale(1);}
     50%{transform:scale(1.2);}
     100%{transform:scale(1);}
+}
+
+/* Imagen final */
+.final-img{
+    margin-top:25px;
+    width:220px;
+    height:220px;
+    object-fit:cover;
+    border-radius:20px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);
+    opacity:0;
+    transform:scale(0.8);
+    transition:1.5s ease;
+}
+
+.final-img.show{
+    opacity:1;
+    transform:scale(1);
 }
 </style>
 </head>
@@ -154,6 +172,9 @@ p{
     <div class="heart">❤️</div>
     <h1>Quiero un futuro con vos</h1>
     <p>Y si aceptás… esta es solo la primera página de nuestra historia.</p>
+
+    <!-- FOTO DE USTEDES -->
+    <img src="nuestra_foto.jpg" class="final-img" id="foto">
 </div>
 
 <div class="line" id="progress"></div>
@@ -171,10 +192,17 @@ function next(){
         document.getElementById("s"+current).classList.add("active");
         document.getElementById("progress").style.width=(current-1)/(total-1)*100+"%";
         if(navigator.vibrate) navigator.vibrate(50);
+
+        // Mostrar foto al final
+        if(current === 5){
+            setTimeout(()=>{
+                document.getElementById("foto").classList.add("show");
+            },800);
+        }
     }
 }
 
-/* Generar estrellas */
+/* Estrellas */
 for(let i=0;i<70;i++){
     let s=document.createElement("div");
     s.className="star";
