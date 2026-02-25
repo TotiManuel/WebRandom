@@ -2,93 +2,102 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maki ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Maki 💜</title>
 
 <style>
-body{
+*{
     margin:0;
-    overflow:hidden;
-    font-family:'Segoe UI',sans-serif;
-    background:black;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
 }
 
-/* escena 3D */
-.scene{
-    perspective:900px;
-    width:100vw;
+body{
+    background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);
     height:100vh;
+    overflow:hidden;
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
+    color:white;
 }
 
-/* contenedor */
-.world{
-    position:relative;
+/* Contenedor tipo app */
+.app{
     width:100%;
     height:100%;
-    transform-style:preserve-3d;
-    animation:camera 12s ease-in-out forwards;
+    position:relative;
+    overflow:hidden;
 }
 
-/* ❤️ corazón 3D */
-.heart{
-    position:absolute;
-    width:120px;
-    height:120px;
-    background:#ff2d55;
-    transform:rotate(-45deg);
-    animation:float 4s infinite ease-in-out;
-}
-.heart:before,
-.heart:after{
-    content:"";
-    position:absolute;
-    width:120px;
-    height:120px;
-    background:#ff2d55;
-    border-radius:50%;
-}
-.heart:before{top:-60px;}
-.heart:after{left:60px;}
-
-/* 🌟 estrellas */
-.star{
-    position:absolute;
-    width:6px;
-    height:6px;
-    background:white;
-    border-radius:50%;
-    animation:twinkle 2s infinite;
-}
-
-/* 🌹 rosa simple */
-.rose{
-    position:absolute;
-    font-size:50px;
-    animation:float 6s infinite;
-}
-
-/* ✨ texto final */
-#final{
+/* Pantallas */
+.screen{
     position:absolute;
     inset:0;
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
     text-align:center;
-    color:white;
-    font-size:26px;
-    padding:30px;
-    opacity:0;
-    transition:2s;
+    padding:40px;
+    transform:translateX(100%);
+    transition:0.6s ease;
 }
 
-/* animaciones */
-@keyframes float{
-    0%,100%{transform:translateY(0) rotate(-45deg);}
-    50%{transform:translateY(-40px) rotate(-45deg);}
+.screen.active{
+    transform:translateX(0);
+}
+
+h1{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+p{
+    font-size:18px;
+    opacity:0.9;
+    line-height:1.6;
+}
+
+/* Botón estilo Android */
+.btn{
+    margin-top:40px;
+    padding:14px 30px;
+    border-radius:50px;
+    border:none;
+    background:#ff2d88;
+    color:white;
+    font-size:16px;
+    box-shadow:0 6px 20px rgba(255,45,136,0.4);
+    transition:0.2s;
+}
+
+.btn:active{
+    transform:scale(0.95);
+}
+
+/* Línea animada */
+.line{
+    position:absolute;
+    bottom:0;
+    left:0;
+    height:4px;
+    background:#ff2d88;
+    width:0%;
+    transition:1s;
+}
+
+/* Estrellas */
+.star{
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:white;
+    border-radius:50%;
+    opacity:0.6;
+    animation:twinkle 3s infinite;
 }
 
 @keyframes twinkle{
@@ -96,69 +105,85 @@ body{
     50%{opacity:1;}
 }
 
-@keyframes camera{
-    0%{transform:translateZ(-600px) rotateX(15deg);}
-    40%{transform:translateZ(-200px) rotateX(0);}
-    70%{transform:translateZ(-100px);}
-    100%{transform:translateZ(0);}
+/* Final especial */
+.heart{
+    font-size:60px;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+    100%{transform:scale(1);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="scene">
-    <div class="world" id="world"></div>
+<div class="app">
+
+<div class="screen active" id="s1">
+    <h1>Hola Maki 💫</h1>
+    <p>Tocá para comenzar un pequeño viaje…</p>
+    <button class="btn" onclick="next()">Empezar</button>
 </div>
 
-<div id="final">
-💖 Maki…  
-Desde que llegaste, mi vida tiene sentido.  
-Quiero crecer con vos, cuidarte y elegirte cada día.  
-Porque no existe un futuro donde no estés.  
-Te amo hoy, mañana y siempre ❤️
+<div class="screen" id="s2">
+    <h1>Todo empezó sin planearlo…</h1>
+    <p>Pero desde el primer momento algo cambió en mí.</p>
+    <button class="btn" onclick="next()">Seguir</button>
+</div>
+
+<div class="screen" id="s3">
+    <h1>Con vos aprendí</h1>
+    <p>Que el amor no se busca… se siente.<br><br>
+    Y yo lo siento cada día que estás.</p>
+    <button class="btn" onclick="next()">Seguir</button>
+</div>
+
+<div class="screen" id="s4">
+    <h1>Mi decisión</h1>
+    <p>No importa lo que venga.<br>
+    Te elijo hoy.<br>
+    Te elegiría mil veces más.</p>
+    <button class="btn" onclick="next()">Descubrir final</button>
+</div>
+
+<div class="screen" id="s5">
+    <div class="heart">❤️</div>
+    <h1>Quiero un futuro con vos</h1>
+    <p>Y si aceptás… esta es solo la primera página de nuestra historia.</p>
+</div>
+
+<div class="line" id="progress"></div>
+
 </div>
 
 <script>
+let current=1;
+let total=5;
 
-/* generar estrellas */
-for(let i=0;i<80;i++){
+function next(){
+    if(current<total){
+        document.getElementById("s"+current).classList.remove("active");
+        current++;
+        document.getElementById("s"+current).classList.add("active");
+        document.getElementById("progress").style.width=(current-1)/(total-1)*100+"%";
+        if(navigator.vibrate) navigator.vibrate(50);
+    }
+}
+
+/* Generar estrellas */
+for(let i=0;i<70;i++){
     let s=document.createElement("div");
     s.className="star";
     s.style.left=Math.random()*100+"vw";
     s.style.top=Math.random()*100+"vh";
-    document.getElementById("world").appendChild(s);
+    s.style.animationDelay=Math.random()*3+"s";
+    document.body.appendChild(s);
 }
-
-/* corazones flotando */
-for(let i=0;i<7;i++){
-    let h=document.createElement("div");
-    h.className="heart";
-    h.style.left=Math.random()*100+"vw";
-    h.style.top=Math.random()*100+"vh";
-    h.style.animationDelay=Math.random()*2+"s";
-    document.getElementById("world").appendChild(h);
-}
-
-/* rosas */
-for(let i=0;i<5;i++){
-    let r=document.createElement("div");
-    r.className="rose";
-    r.innerHTML="🌹";
-    r.style.left=Math.random()*100+"vw";
-    r.style.top=Math.random()*100+"vh";
-    r.style.animationDelay=Math.random()*3+"s";
-    document.getElementById("world").appendChild(r);
-}
-
-/* final romántico */
-setTimeout(()=>{
-    document.getElementById("final").style.opacity=1;
-},9000);
-
 </script>
 
 </body>
 </html>
-
-
